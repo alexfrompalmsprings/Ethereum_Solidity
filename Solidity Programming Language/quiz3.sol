@@ -1,7 +1,8 @@
+// SPDX-License-Identifier: GPL-3.0
+
 // Question 1:
 // Is it possible to get the value of the price state variable?
 
-// SPDX-License-Identifier: GPL-3.0
 
 // QUESTION #1 - Is it possible to get the value of the price state variable?
 // Answer: Price is a public variable and for public variables a getter is automatically created.

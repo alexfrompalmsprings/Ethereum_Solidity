@@ -27,7 +27,6 @@ contract Property{
 // What is the value of the price and sold state variables after contract deployment?
 // Answer: Until initiation the value equals to zero and the the boolean should be false
 
-// SPDX-License-Identifier: GPL-3.0
 
 pragma solidity >=0.5.0 <0.9.0;
 
@@ -46,7 +45,6 @@ contract Property{
 // How much gas costs to get the value of the price state variable?
 // Answer: This is a call, not a transaction. It doesn't modify the blockchain and it doesn't cost gas.
 
-// SPDX-License-Identifier: GPL-3.0
 
 pragma solidity >=0.5.0 <0.9.0;
 
@@ -67,7 +65,6 @@ contract Property{
 // Will compile the following contract?
 // Answer: NOPE, reassigning a variable is not pertmitted; only at iniation
 
-// SPDX-License-Identifier: GPL-3.0
 
 pragma solidity >=0.5.0 <0.9.0;
 
@@ -90,7 +87,6 @@ contract Property{
 // Answer: The view keyword means that the function doesn't modify the blockchain, but this function modifies the blockchain (the state variable named price). It won't work.
 
 
-// SPDX-License-Identifier: GPL-3.0
 
 pragma solidity >=0.5.0 <0.9.0;
 
@@ -116,7 +112,6 @@ contract Property{
 // The following contract doesn't compile. Why?
 // Answer: If the function returns a value we must specify in its signature what it returns. The correct function signature is: function getPrice(uint _price) public returns(uint) {...}
 
-// SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.5.0 <0.9.0;
 
 contract Property{
@@ -136,7 +131,6 @@ contract Property{
 // | location saved on storage
 // | x local variable
 
-// SPDX-License-Identifier: GPL-3.0
 
 pragma solidity >=0.5.0 <0.9.0;
 
@@ -158,7 +152,6 @@ contract Property{
 // Choose the correct statement.
 // Answer: The constructor is automatically executed only at contract deployment time.
 
-// // SPDX-License-Identifier: GPL-3.0
 
 // pragma solidity >=0.5.0 <0.9.0;
 

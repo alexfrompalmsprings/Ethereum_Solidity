@@ -18,7 +18,7 @@ contract Lottery{
     // declaring the receive() function that is necessary to receive ETH
     receive () payable external{
         // each player sends exactly 0.1 ETH
-        // require(msg.value == 0.1 ether);
+        require(msg.value == 0.1 ether);
         // appending the player to the players array --- convert the address into payable addresses
         players.push(payable(msg.sender));
     }
@@ -26,7 +26,7 @@ contract Lottery{
     // returning the contract's balance in wei
     function getBalance() public view returns(uint){
         // only the manager is allowed to call it
-        // require(msg.sender == manager);
+        require(msg.sender == manager);
         return address(this).balance;
     }
 

@@ -11,8 +11,8 @@ contract Lottery{
 
     // declaring the constructor
     constructor(){
-        // initializing the owner to the address that deploys the contract
-        manager = msg.sender;
+    // initializing the owner to the address that deploys the contract
+    manager = msg.sender; // cant be changed since we dont have a setter function to change the manager
     }
 
     // declaring the receive() function that is necessary to receive ETH
@@ -23,13 +23,31 @@ contract Lottery{
         players.push(payable(msg.sender));
     }
 
-    // returning the contract's balance in wei
-    function getBalance() public view returns(uint){
-        // only the manager is allowed to call it
-        require(msg.sender == manager);
-        return address(this).balance;
+  // helper function that returns a big random integer
+    function random() internal view returns(uint){
+       return uint(keccak256(abi.encodePacked(block.difficulty, block.timestamp, players.length)));
     }
 
 
+    // selecting the winner
+    function pickWinner() public{
+        // only the manager can pick a winner if there are at least 3 players in the lottery
+        require(msg.sender == manager);
+        require (players.length >= 3);
+
+        uint r = random();
+        address payable winner;
+
+        // computing a random index of the array
+        uint index = r % players.length;
+
+        winner = players[index]; // this is the winner
+
+        // transferring the entire contract's balance to the winner
+        winner.transfer(getBalance());
+
+        // resetting the lottery for the next round
+        players = new address payable[](0);
+    }
 
 }

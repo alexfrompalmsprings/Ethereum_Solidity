@@ -13,12 +13,16 @@ contract Lottery{
     constructor(){
     // initializing the owner to the address that deploys the contract
     manager = msg.sender; // cant be changed since we dont have a setter function to change the manager
+
+
+    // to add the manager automatically to the library we can push the manager into the initial players []
+    players.push(payable(manager));
     }
 
     // declaring the receive() function that is necessary to receive ETH
     receive () payable external{
-       // the manager can not participate in the lottery
-        require(msg.sender != manager);
+      //  // the manager can not participate in the lottery
+      //   require(msg.sender != manager);
 
         // each player sends exactly 0.1 ETH
         require(msg.value == 0.1 ether);

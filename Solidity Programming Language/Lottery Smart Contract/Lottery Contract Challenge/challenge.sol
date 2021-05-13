@@ -39,8 +39,10 @@ contract Lottery{
     // selecting the winner
     function pickWinner() public{
         // only the manager can pick a winner if there are at least 3 players in the lottery
-        require(msg.sender == manager);
-        require (players.length >= 3);
+        // require(msg.sender == manager);
+
+        // needs to be at least 10 players
+        require (players.length >= 10);
 
         uint r = random();
         address payable winner;

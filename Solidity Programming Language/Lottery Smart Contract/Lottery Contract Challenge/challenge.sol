@@ -17,6 +17,9 @@ contract Lottery{
 
     // declaring the receive() function that is necessary to receive ETH
     receive () payable external{
+       // the manager can not participate in the lottery
+        require(msg.sender != manager);
+
         // each player sends exactly 0.1 ETH
         require(msg.value == 0.1 ether);
         // appending the player to the players array --- convert the address into payable addresses

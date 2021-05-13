@@ -39,7 +39,7 @@ contract Lottery{
     // selecting the winner
     function pickWinner() public{
         // only the manager can pick a winner if there are at least 3 players in the lottery
-        // require(msg.sender == manager);
+        require(msg.sender == manager);
 
         // needs to be at least 10 players
         require (players.length >= 10);
@@ -52,8 +52,19 @@ contract Lottery{
 
         winner = players[index]; // this is the winner
 
-        // transferring the entire contract's balance to the winner
-        winner.transfer(getBalance());
+
+        // change the contract so the manager receives 10% of the FEE
+        uint managerFee = (getBalance() * 10) /100;
+
+        uint winnerPrize = (getBalance() *  90) /100;
+
+
+
+        // transferring the 90% of the prize to the winner
+        winner.transfer((winnerPrize));
+
+        // transferring the 90% of the prize to the winner
+        payable(manager).transfer(managerFee);
 
         // resetting the lottery for the next round
         players = new address payable[](0);

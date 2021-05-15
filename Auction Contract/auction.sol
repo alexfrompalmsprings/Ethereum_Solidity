@@ -34,11 +34,17 @@ contract Auction{
     bidIncrement = 100;
   }
 
+  /*
+    MODIFIER FUNCTIONS
+    https://jeancvllr.medium.com/solidity-tutorial-all-about-modifiers-a86cf81c14cb
+  */
+
+
   modifier notOwner(){
     // check the owner is not able to place a bid
     // owner can increase the price of the auction by placing fake bids
     require(msg.sender != owner);
-    _;
+    _; // this is called a wildcard ; It merges the function code with the modifier code where the _; is placed.
   }
 
   modifier afterStart(){
@@ -51,6 +57,11 @@ contract Auction{
     _;
   }
 
+  // function to check that the owner is the only person available to do an action
+  modifier onlyOwner(){
+    require(msg.sender == owner);
+  }
+
   function min(uint a, uint b) pure internal returns(uint){
     if(a <= b){
       return a;
@@ -59,27 +70,30 @@ contract Auction{
     }
   }
 
+  function cancelAuction() public onlyOwner{
+    auctionState = State.Canceled;
+  }
 
 
   function placeBid() public payable notOwner afterStart beforeEnd{
-    require(auctionState == State.Running);
-    require(msg.value >= 100);
+      require(auctionState == State.Running);
+      require(msg.value >= 100);
 
-    uint currentBid = bids[msg.sender] + msg.value;
-    require(currentBid > highestBindingBid);
+      uint currentBid = bids[msg.sender] + msg.value;
+      require(currentBid > highestBindingBid);
 
-  bids[msg.sender] = currentBid;
+    bids[msg.sender] = currentBid;
 
-  if(currentBid <= bids[highestBidder]){
-    // create a helper function to find the min bid
-    highestBindingBid = min(currentBid + bidIncrement, bids[highestBidder]);
+    if(currentBid <= bids[highestBidder]){
+      // create a helper function to find the min bid
+      highestBindingBid = min(currentBid + bidIncrement, bids[highestBidder]);
 
-  } else {
-    highestBindingBid = min(currentBid, bids[highestBidder] + bidIncrement);
-    highestBidder = payable(msg.sender);
-  }
+    } else {
+      highestBindingBid = min(currentBid, bids[highestBidder] + bidIncrement);
+      highestBidder = payable(msg.sender);
+    }
 
-  }
+}
 
 
 

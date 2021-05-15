@@ -93,12 +93,42 @@ contract Auction{
       highestBidder = payable(msg.sender);
     }
 
-}
+  }
 
+  function finalizeAuction() public{
+    // check transaction is either cancellled or it ended
+    require(auctionState == State.Canceled || block.number > endBlock);
+    require(msg.sender == owner || bids[msg.sender] > 0);
 
+    address payable recipient;
+    uint value;
 
+    // the auction was cancelled and bidders can request their money
+    if(auctionState == State.Canceled){
+      recipient = payable(msg.sender);
+      //           ⬇️ value the bidder sent
+      value  = bids[msg.sender];
 
+    // auction ended & not cancelled
+    } else{
 
+      if(msg.sender == owner){
+        recipient = owner;
+        value = highestBindingBid;
 
+      // this is a bidder
+      } else{
+        if(msg.sender == highestBidder){
+          recipient = highestBidder;
+          value = bids[highestBidder] - highestBindingBid;
+        } else{
+          // neither the owner nor the highestBidder
+          recipient = payable(msg.sender);
+          value = bids[msg.sender];
+        }
+      }
+    }
 
+    recipient.transfer(value);
+  }
 }

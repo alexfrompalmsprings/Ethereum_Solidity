@@ -34,6 +34,55 @@ contract Auction{
     bidIncrement = 100;
   }
 
+  modifier notOwner(){
+    // check the owner is not able to place a bid
+    // owner can increase the price of the auction by placing fake bids
+    require(msg.sender != owner);
+    _;
+  }
+
+  modifier afterStart(){
+    require(block.number >= startBlock);
+    _;
+  }
+
+  modifier beforeEnd(){
+    require(block.number <= endBlock);
+    _;
+  }
+
+  function min(uint a, uint b) pure internal returns(uint){
+    if(a <= b){
+      return a;
+    } else{
+      return b;
+    }
+  }
+
+
+
+  function placeBid() public payable notOwner afterStart beforeEnd{
+    require(auctionState == State.Running);
+    require(msg.value >= 100);
+
+    uint currentBid = bids[msg.sender] + msg.value;
+    require(currentBid > highestBindingBid);
+
+  bids[msg.sender] = currentBid;
+
+  if(currentBid <= bids[highestBidder]){
+    // create a helper function to find the min bid
+    highestBindingBid = min(currentBid + bidIncrement, bids[highestBidder]);
+
+  } else {
+    highestBindingBid = min(currentBid, bids[highestBidder] + bidIncrement);
+    highestBidder = payable(msg.sender);
+  }
+
+  }
+
+
+
 
 
 
